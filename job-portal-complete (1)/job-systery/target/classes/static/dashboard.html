@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard | Job Portal</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);min-height:100vh;font-family:'Segoe UI',sans-serif;display:flex;}
+    .sidebar{width:240px;min-height:100vh;background:rgba(15,23,42,.97);border-right:1px solid rgba(99,102,241,.2);padding:28px 18px;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;}
+    .sidebar .brand{color:#818cf8;font-size:1.3rem;font-weight:800;margin-bottom:36px;display:flex;align-items:center;gap:10px;}
+    .sidebar a{display:flex;align-items:center;gap:10px;padding:11px 14px;color:#94a3b8;text-decoration:none;border-radius:10px;font-size:.9rem;font-weight:500;margin-bottom:4px;transition:all .2s;}
+    .sidebar a:hover,.sidebar a.active{background:rgba(99,102,241,.18);color:#e2e8f0;}
+    .sidebar a i{width:18px;}
+    .sidebar .logout-btn{margin-top:auto;display:flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(239,68,68,.15);color:#f87171;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;width:100%;transition:all .2s;}
+    .sidebar .logout-btn:hover{background:rgba(239,68,68,.3);}
+    .main{margin-left:240px;padding:32px;flex:1;}
+    .topbar{display:flex;justify-content:space-between;align-items:center;background:rgba(30,41,59,.8);border:1px solid rgba(99,102,241,.15);border-radius:14px;padding:18px 24px;margin-bottom:28px;}
+    .topbar h4{color:#e2e8f0;font-weight:800;margin:0;}
+    .user-chip{display:flex;align-items:center;gap:8px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);border-radius:20px;padding:6px 14px;color:#a5b4fc;font-size:.85rem;}
+    .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px;}
+    .stat-card{background:rgba(30,41,59,.8);border:1px solid rgba(99,102,241,.15);border-radius:16px;padding:22px;display:flex;align-items:center;gap:16px;}
+    .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .stat-icon.blue{background:rgba(99,102,241,.2);color:#818cf8;}
+    .stat-icon.green{background:rgba(34,197,94,.2);color:#4ade80;}
+    .stat-icon.red{background:rgba(239,68,68,.2);color:#f87171;}
+    .stat-icon.orange{background:rgba(251,146,60,.2);color:#fb923c;}
+    .stat-num{color:#e2e8f0;font-size:1.8rem;font-weight:800;line-height:1;}
+    .stat-label{color:#64748b;font-size:.8rem;margin-top:4px;}
+    .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .section-header h5{color:#e2e8f0;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px;}
+    .panel{background:rgba(30,41,59,.8);border:1px solid rgba(99,102,241,.15);border-radius:16px;padding:24px;margin-bottom:24px;}
+    .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .profile-field label{color:#64748b;font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:4px;}
+    .profile-field .value{color:#cbd5e1;font-size:.92rem;background:rgba(15,23,42,.5);border-radius:8px;padding:10px 14px;}
+    .badge-status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.78rem;font-weight:700;}
+    .badge-PENDING{background:rgba(251,146,60,.15);color:#fb923c;border:1px solid rgba(251,146,60,.3);}
+    .badge-ACCEPTED{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+    .badge-REJECTED{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+    table{width:100%;border-collapse:collapse;}
+    th{color:#475569;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;text-align:left;border-bottom:1px solid rgba(99,102,241,.15);}
+    td{color:#94a3b8;font-size:.88rem;padding:13px 14px;border-bottom:1px solid rgba(15,23,42,.4);}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:rgba(99,102,241,.05);}
+    .empty-row td{text-align:center;color:#475569;padding:32px;}
+    .btn-action{padding:7px 16px;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+    .btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;}
+    .btn-primary:hover{box-shadow:0 4px 15px rgba(99,102,241,.4);}
+    .btn-danger{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;justify-content:center;align-items:center;}
+    .modal-overlay.show{display:flex;}
+    .modal-box{background:#1e293b;border:1px solid rgba(99,102,241,.3);border-radius:18px;padding:30px;width:480px;max-width:95vw;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+    .modal-box h5{color:#e2e8f0;font-weight:800;margin-bottom:20px;}
+    .mfield{margin-bottom:14px;}
+    .mfield label{color:#94a3b8;font-size:.83rem;font-weight:600;display:block;margin-bottom:6px;}
+    .mfield input,.mfield textarea,.mfield select{width:100%;background:rgba(15,23,42,.7);border:1px solid rgba(99,102,241,.2);color:#e2e8f0;border-radius:10px;padding:10px 14px;font-size:.9rem;outline:none;font-family:'Segoe UI',sans-serif;}
+    .mfield input:focus,.mfield textarea:focus,.mfield select:focus{border-color:#818cf8;}
+    .mfield textarea{resize:none;height:80px;}
+    .mfield select option{background:#1e293b;}
+    .modal-footer{display:flex;gap:10px;margin-top:20px;}
+    .modal-footer button{flex:1;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;border:none;}
+    .btn-save{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;}
+    .btn-cancel{background:rgba(100,116,139,.2);color:#94a3b8;border:1px solid rgba(100,116,139,.3)!important;}
+    .toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#4ade80;padding:13px 20px;border-radius:12px;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:10px;transform:translateY(80px);transition:transform .3s;box-shadow:0 8px 25px rgba(0,0,0,.3);}
+    .toast.show{transform:translateY(0);}
+    .toast.error{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4);color:#f87171;}
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="brand"><i class="fas fa-briefcase"></i>Job Portal</div>
+  <a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i>Dashboard</a>
+  <a href="jobs.html"><i class="fas fa-search"></i>Browse Jobs</a>
+  <a href="#applications" onclick="scrollTo('applications')"><i class="fas fa-file-alt"></i>My Applications</a>
+  <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+</div>
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <h4><i class="fas fa-chart-line" style="color:#818cf8;margin-right:10px;"></i>My Dashboard</h4>
+    <div class="user-chip"><i class="fas fa-user-circle"></i><span id="topName">...</span></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-paper-plane"></i></div><div><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total Applications</div></div></div>
+    <div class="stat-card"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div><div><div class="stat-num" id="statAccepted">0</div><div class="stat-label">Accepted</div></div></div>
+    <div class="stat-card"><div class="stat-icon red"><i class="fas fa-times-circle"></i></div><div><div class="stat-num" id="statRejected">0</div><div class="stat-label">Rejected</div></div></div>
+  </div>
+
+  <!-- PROFILE PANEL -->
+  <div class="panel">
+    <div class="section-header">
+      <h5><i class="fas fa-user" style="color:#818cf8;"></i>My Profile</h5>
+      <button class="btn-action btn-primary" onclick="openEditModal()"><i class="fas fa-edit" style="margin-right:5px;"></i>Edit Profile</button>
+    </div>
+    <div class="profile-grid">
+      <div class="profile-field"><label>Full Name</label><div class="value" id="pName">-</div></div>
+      <div class="profile-field"><label>Email</label><div class="value" id="pEmail">-</div></div>
+      <div class="profile-field"><label>Phone</label><div class="value" id="pPhone">-</div></div>
+      <div class="profile-field"><label>Education</label><div class="value" id="pEducation">-</div></div>
+      <div class="profile-field"><label>Experience</label><div class="value" id="pExperience">-</div></div>
+      <div class="profile-field"><label>Skills</label><div class="value" id="pSkills">-</div></div>
+    </div>
+  </div>
+
+  <!-- APPLICATIONS TABLE -->
+  <div class="panel" id="applications">
+    <div class="section-header">
+      <h5><i class="fas fa-file-alt" style="color:#818cf8;"></i>My Applications</h5>
+      <a href="jobs.html" class="btn-action btn-primary" style="text-decoration:none;"><i class="fas fa-plus" style="margin-right:5px;"></i>Browse Jobs</a>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Job Title</th><th>Company</th><th>Status</th></tr></thead>
+      <tbody id="appTable"></tbody>
+    </table>
+  </div>
+
+  <!-- REPORT SECTION -->
+  <div class="panel">
+    <div class="section-header">
+      <h5><i class="fas fa-flag" style="color:#f87171;"></i>Report a Company</h5>
+      <button class="btn-action btn-danger" onclick="openReportModal()"><i class="fas fa-plus" style="margin-right:5px;"></i>New Report</button>
+    </div>
+    <p style="color:#64748b;font-size:.88rem;">Have an issue with a company? Submit a report and our admin team will review it.</p>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <h5><i class="fas fa-user-edit" style="color:#818cf8;margin-right:8px;"></i>Edit Profile</h5>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="mfield"><label>Name</label><input id="eName" placeholder="Full name"></div>
+      <div class="mfield"><label>Phone</label><input id="ePhone" placeholder="017XXXXXXXX"></div>
+    </div>
+    <div class="mfield"><label>Skills</label><textarea id="eSkills" placeholder="Java, React, Python..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="mfield"><label>Education</label>
+        <select id="eEducation"><option value="">Select</option><option>SSC</option><option>HSC</option><option>BSc</option><option>MSc</option><option>PhD</option></select>
+      </div>
+      <div class="mfield"><label>Experience</label>
+        <select id="eExperience"><option value="">Select</option><option>Fresh Graduate</option><option>0–1 year</option><option>1–3 years</option><option>3–5 years</option><option>5+ years</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-save" onclick="saveProfile()"><i class="fas fa-save" style="margin-right:6px;"></i>Save</button>
+      <button class="btn-cancel" onclick="closeModal('editModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal-box">
+    <h5><i class="fas fa-flag" style="color:#f87171;margin-right:8px;"></i>Report a Company</h5>
+    <div class="mfield"><label>Company Name</label><input id="rCompany" placeholder="Enter company name"></div>
+    <div class="mfield"><label>Issue Description</label><textarea id="rIssue" placeholder="Describe your issue in detail..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn-save" style="background:linear-gradient(135deg,#ef4444,#dc2626);" onclick="submitReport()"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Submit Report</button>
+      <button class="btn-cancel" onclick="closeModal('reportModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let user = JSON.parse(localStorage.getItem('user'));
+  if (!user) window.location.href = 'login.html';
+
+  function init() {
+    document.getElementById('topName').textContent = user.name;
+    // Load full profile
+    fetch('http://localhost:8080/users/email/' + user.email)
+      .then(r => r.json())
+      .then(u => {
+        user = {...user, ...u};
+        localStorage.setItem('user', JSON.stringify(user));
+        document.getElementById('pName').textContent = u.name || '-';
+        document.getElementById('pEmail').textContent = u.email || '-';
+        document.getElementById('pPhone').textContent = u.phone || '-';
+        document.getElementById('pEducation').textContent = u.education || '-';
+        document.getElementById('pExperience').textContent = u.experience || '-';
+        document.getElementById('pSkills').textContent = u.skills || '-';
+      }).catch(() => {
+        document.getElementById('pName').textContent = user.name;
+        document.getElementById('pEmail').textContent = user.email;
+      });
+
+    fetch('http://localhost:8080/application/user/' + user.email)
+      .then(r => r.json())
+      .then(apps => {
+        let a=0,r=0;
+        const rows = apps.map((app,i) => {
+          if(app.status==='ACCEPTED') a++;
+          if(app.status==='REJECTED') r++;
+          return `<tr><td>${i+1}</td><td>${app.jobTitle}</td><td>${app.companyName}</td><td><span class="badge-status badge-${app.status}">${app.status}</span></td></tr>`;
+        });
+        document.getElementById('appTable').innerHTML = rows.length
+          ? rows.join('')
+          : '<tr class="empty-row"><td colspan="4"><i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:8px;"></i>No applications yet. <a href="jobs.html" style="color:#818cf8;">Browse jobs</a></td></tr>';
+        document.getElementById('statTotal').textContent = apps.length;
+        document.getElementById('statAccepted').textContent = a;
+        document.getElementById('statRejected').textContent = r;
+      });
+  }
+
+  function openEditModal() {
+    document.getElementById('eName').value = user.name || '';
+    document.getElementById('ePhone').value = user.phone || '';
+    document.getElementById('eSkills').value = user.skills || '';
+    document.getElementById('eEducation').value = user.education || '';
+    document.getElementById('eExperience').value = user.experience || '';
+    document.getElementById('editModal').classList.add('show');
+  }
+  function openReportModal() { document.getElementById('reportModal').classList.add('show'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+  function saveProfile() {
+    const body = {
+      name: document.getElementById('eName').value.trim(),
+      email: user.email,
+      phone: document.getElementById('ePhone').value.trim(),
+      skills: document.getElementById('eSkills').value.trim(),
+      education: document.getElementById('eEducation').value,
+      experience: document.getElementById('eExperience').value
+    };
+    fetch('http://localhost:8080/users/' + user.id, {
+      method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+    })
+    .then(r => r.json())
+    .then(u => {
+      user = {...user, ...u};
+      localStorage.setItem('user', JSON.stringify(user));
+      closeModal('editModal');
+      showToast('✅ Profile updated!');
+      init();
+    })
+    .catch(() => showToast('Failed to update profile.','error'));
+  }
+
+  function submitReport() {
+    const company = document.getElementById('rCompany').value.trim();
+    const issue = document.getElementById('rIssue').value.trim();
+    if (!company || !issue) { showToast('Please fill all fields.','error'); return; }
+    fetch('http://localhost:8080/report/send', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ userName:user.name, userEmail:user.email, companyName:company, issue })
+    })
+    .then(() => { closeModal('reportModal'); showToast('✅ Report submitted successfully!'); document.getElementById('rCompany').value=''; document.getElementById('rIssue').value=''; })
+    .catch(() => showToast('Failed to submit report.','error'));
+  }
+
+  function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = `toast${type==='error'?' error':''}`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3200);
+  }
+  function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+
+  init();
+</script>
+</body>
+</html>
