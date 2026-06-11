@@ -4,706 +4,453 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Job Portal</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body { background: #f1f5f9; font-family: 'Segoe UI', sans-serif; }
-
-    .sidebar {
-      min-height: 100vh;
-      background: linear-gradient(180deg, #0f172a, #1e293b);
-      color: white;
-      position: fixed;
-      width: 260px;
-      top: 0; left: 0;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-    }
-    .sidebar .brand { padding: 24px 20px 12px; border-bottom: 1px solid #334155; }
-    .sidebar .brand h5 { margin: 0; font-weight: 700; letter-spacing: 0.5px; }
-    .sidebar .brand small { color: #94a3b8; font-size: 11px; }
-    .sidebar nav { flex: 1; padding: 12px 0; }
-    .sidebar a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 11px 20px; color: #94a3b8;
-      text-decoration: none; border-radius: 8px;
-      margin: 2px 10px; font-size: 14px; font-weight: 500;
-      transition: all 0.15s;
-    }
-    .sidebar a i { font-size: 16px; width: 20px; text-align: center; }
-    .sidebar a:hover { background: #1e3a5f; color: #e2e8f0; }
-    .sidebar a.active { background: #2563eb; color: #fff; }
-    .sidebar .logout-area { padding: 16px; border-top: 1px solid #334155; }
-
-    .content { margin-left: 260px; padding: 28px; min-height: 100vh; }
-
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 28px;
-    }
-    .topbar h4 { margin: 0; font-weight: 700; color: #0f172a; }
-    .admin-badge {
-      background: #1e293b; color: #e2e8f0;
-      padding: 6px 14px; border-radius: 20px;
-      font-size: 13px; font-weight: 500;
-    }
-
-    .stat-card {
-      background: white; border-radius: 14px;
-      padding: 22px; margin-bottom: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      border-left: 4px solid #2563eb;
-      display: flex; align-items: center; gap: 16px;
-    }
-    .stat-card.green { border-color: #16a34a; }
-    .stat-card.orange { border-color: #ea580c; }
-    .stat-card.purple { border-color: #7c3aed; }
-    .stat-card.red { border-color: #dc2626; }
-    .stat-icon {
-      width: 50px; height: 50px; border-radius: 12px;
-      background: #eff6ff; display: flex; align-items: center; justify-content: center;
-      font-size: 22px; color: #2563eb; flex-shrink: 0;
-    }
-    .stat-card.green .stat-icon { background: #f0fdf4; color: #16a34a; }
-    .stat-card.orange .stat-icon { background: #fff7ed; color: #ea580c; }
-    .stat-card.purple .stat-icon { background: #f5f3ff; color: #7c3aed; }
-    .stat-card.red .stat-icon { background: #fef2f2; color: #dc2626; }
-    .stat-number { font-size: 2rem; font-weight: 800; color: #0f172a; line-height: 1; }
-    .stat-label { font-size: 12px; color: #64748b; font-weight: 500; margin-top: 4px; }
-
-    .table-card {
-      background: white; border-radius: 14px;
-      padding: 20px; margin-top: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-    .table thead th {
-      background: #f8fafc; font-size: 12px;
-      font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.5px; color: #64748b;
-      border-bottom: 2px solid #e2e8f0; padding: 12px 14px;
-    }
-    .table td { padding: 12px 14px; vertical-align: middle; font-size: 14px; color: #1e293b; }
-    .table tbody tr:hover { background: #f8fafc; }
-    .badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-    .btn-sm { font-size: 12px; padding: 4px 10px; border-radius: 6px; }
-    .section-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
-    }
-    .section-header h5 { margin: 0; font-weight: 700; color: #0f172a; }
-    .search-box {
-      border: 1px solid #e2e8f0; border-radius: 8px;
-      padding: 7px 14px; font-size: 13px; width: 220px; outline: none;
-    }
-    .search-box:focus { border-color: #2563eb; }
-
-    .modal-header { background: #0f172a; color: white; border-radius: 12px 12px 0 0; }
-    .modal-title { font-weight: 700; font-size: 15px; }
-    .modal-content { border-radius: 12px; border: none; }
-
-    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1100; }
-    .toast { border-radius: 10px; min-width: 240px; }
-
-    .empty-state { text-align: center; padding: 50px 20px; color: #94a3b8; }
-    .empty-state i { font-size: 3rem; display: block; margin-bottom: 12px; }
-
-    .user-info-row td:first-child { font-weight: 600; color: #64748b; width: 130px; }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);min-height:100vh;font-family:'Segoe UI',sans-serif;display:flex;}
+    .sidebar{width:240px;min-height:100vh;background:rgba(15,23,42,.98);border-right:1px solid rgba(168,85,247,.2);padding:28px 18px;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;}
+    .sidebar .brand{color:#c084fc;font-size:1.3rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+    .sidebar .brand-sub{color:#475569;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:28px;}
+    .sidebar a{display:flex;align-items:center;gap:10px;padding:11px 14px;color:#94a3b8;text-decoration:none;border-radius:10px;font-size:.9rem;font-weight:500;margin-bottom:4px;transition:all .2s;}
+    .sidebar a:hover,.sidebar a.active{background:rgba(168,85,247,.15);color:#e2e8f0;}
+    .sidebar a i{width:18px;}
+    .sidebar .logout-btn{margin-top:auto;display:flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(239,68,68,.15);color:#f87171;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;width:100%;transition:all .2s;}
+    .sidebar .logout-btn:hover{background:rgba(239,68,68,.3);}
+    .main{margin-left:240px;padding:32px;flex:1;min-width:0;}
+    .topbar{display:flex;justify-content:space-between;align-items:center;background:rgba(30,41,59,.8);border:1px solid rgba(168,85,247,.15);border-radius:14px;padding:18px 24px;margin-bottom:28px;}
+    .topbar h4{color:#e2e8f0;font-weight:800;margin:0;display:flex;align-items:center;gap:10px;}
+    .admin-chip{display:flex;align-items:center;gap:8px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:6px 14px;color:#d8b4fe;font-size:.85rem;}
+    /* SERVER STATUS BANNER */
+    .server-banner{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:12px;padding:14px 20px;margin-bottom:20px;display:none;align-items:center;gap:12px;font-weight:600;font-size:.9rem;}
+    .server-banner.ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3);color:#4ade80;}
+    /* STATS */
+    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+    .stat-card{background:rgba(30,41,59,.8);border:1px solid rgba(168,85,247,.1);border-radius:16px;padding:20px;display:flex;align-items:center;gap:14px;transition:all .2s;}
+    .stat-card:hover{border-color:rgba(168,85,247,.3);}
+    .stat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+    .si-purple{background:rgba(168,85,247,.2);color:#c084fc;}
+    .si-blue{background:rgba(99,102,241,.2);color:#818cf8;}
+    .si-green{background:rgba(34,197,94,.2);color:#4ade80;}
+    .si-orange{background:rgba(251,146,60,.2);color:#fb923c;}
+    .si-teal{background:rgba(20,184,166,.2);color:#2dd4bf;}
+    .si-red{background:rgba(239,68,68,.2);color:#f87171;}
+    .stat-num{color:#e2e8f0;font-size:1.7rem;font-weight:800;line-height:1;}
+    .stat-label{color:#64748b;font-size:.78rem;margin-top:3px;}
+    /* TABS */
+    .tab-bar{display:flex;gap:4px;background:rgba(15,23,42,.6);border-radius:12px;padding:5px;margin-bottom:24px;flex-wrap:wrap;}
+    .tab-btn{padding:9px 16px;border-radius:9px;border:none;background:transparent;color:#64748b;font-size:.86rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .tab-btn.active{background:linear-gradient(135deg,#7c3aed,#6366f1);color:white;}
+    .tab-btn:hover:not(.active){background:rgba(168,85,247,.1);color:#e2e8f0;}
+    /* PANELS */
+    .panel{background:rgba(30,41,59,.8);border:1px solid rgba(168,85,247,.1);border-radius:16px;padding:24px;display:none;}
+    .panel.active{display:block;}
+    .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+    .panel-header h5{color:#e2e8f0;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px;}
+    .search-input{background:rgba(15,23,42,.7);border:1px solid rgba(168,85,247,.2);color:#e2e8f0;border-radius:8px;padding:8px 14px;font-size:.85rem;outline:none;width:220px;transition:all .2s;}
+    .search-input:focus{border-color:#c084fc;box-shadow:0 0 0 3px rgba(168,85,247,.1);}
+    .search-input::placeholder{color:#334155;}
+    /* TABLE */
+    .table-wrap{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;min-width:500px;}
+    th{color:#475569;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;text-align:left;border-bottom:1px solid rgba(168,85,247,.1);white-space:nowrap;}
+    td{color:#94a3b8;font-size:.86rem;padding:12px 14px;border-bottom:1px solid rgba(15,23,42,.4);vertical-align:middle;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:rgba(168,85,247,.04);}
+    .empty-row td{text-align:center;color:#475569;padding:40px;}
+    .empty-row i{font-size:2rem;display:block;margin-bottom:10px;opacity:.4;}
+    /* BADGES */
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.74rem;font-weight:700;white-space:nowrap;}
+    .badge-USER{background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.3);}
+    .badge-ADMIN{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.3);}
+    .badge-BANNED{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+    .badge-COMPANY{background:rgba(14,165,233,.15);color:#38bdf8;border:1px solid rgba(14,165,233,.3);}
+    .badge-ACTIVE{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+    .badge-CLOSED{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.3);}
+    .badge-PENDING{background:rgba(251,146,60,.15);color:#fb923c;border:1px solid rgba(251,146,60,.3);}
+    .badge-ACCEPTED{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+    .badge-REJECTED{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+    .badge-RESOLVED{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+    .badge-SUSPENDED{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+    /* BUTTONS */
+    .btn-sm{padding:5px 11px;border-radius:7px;font-size:.76rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;margin-right:3px;white-space:nowrap;}
+    .btn-sm:hover{opacity:.8;transform:translateY(-1px);}
+    .btn-danger{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.3)!important;}
+    .btn-success{background:rgba(34,197,94,.2);color:#4ade80;border:1px solid rgba(34,197,94,.3)!important;}
+    .btn-warning{background:rgba(251,146,60,.2);color:#fb923c;border:1px solid rgba(251,146,60,.3)!important;}
+    .btn-purple{background:rgba(168,85,247,.2);color:#c084fc;border:1px solid rgba(168,85,247,.3)!important;}
+    /* LOADING SKELETON */
+    .skeleton{background:linear-gradient(90deg,rgba(30,41,59,.8) 25%,rgba(51,65,85,.4) 50%,rgba(30,41,59,.8) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;height:14px;display:inline-block;}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    /* TOAST */
+    .toast{position:fixed;bottom:28px;right:28px;z-index:9999;padding:13px 20px;border-radius:12px;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:10px;transform:translateY(80px);transition:transform .3s;box-shadow:0 8px 25px rgba(0,0,0,.4);}
+    .toast.show{transform:translateY(0);}
+    .toast-success{background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#4ade80;}
+    .toast-error{background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#f87171;}
+    .toast-info{background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.4);color:#d8b4fe;}
+    /* truncate */
+    .truncate{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   </style>
 </head>
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
-  <div class="brand">
-    <h5><i class="bi bi-kanban-fill me-2"></i>Admin Panel</h5>
-    <small>Job Portal Management</small>
-  </div>
-  <nav>
-    <a href="#" class="active" data-section="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a href="#" data-section="users"><i class="bi bi-people"></i> Users</a>
-    <a href="#" data-section="companies"><i class="bi bi-building"></i> Companies</a>
-    <a href="#" data-section="jobs"><i class="bi bi-briefcase"></i> Jobs</a>
-    <a href="#" data-section="applications"><i class="bi bi-file-earmark-text"></i> Applications</a>
-    <a href="#" data-section="reports"><i class="bi bi-flag"></i> Reports</a>
-  </nav>
-  <div class="logout-area">
-    <a href="/login.html" style="margin:0; color:#f87171;"><i class="bi bi-box-arrow-left"></i> Logout</a>
-  </div>
+  <div class="brand"><i class="fas fa-shield-alt"></i>Admin</div>
+  <div class="brand-sub">Control Panel</div>
+  <a href="#" onclick="showTab('overview')" id="nav-overview" class="active"><i class="fas fa-chart-bar"></i>Overview</a>
+  <a href="#" onclick="showTab('users')"    id="nav-users"><i class="fas fa-users"></i>Users</a>
+  <a href="#" onclick="showTab('companies')"id="nav-companies"><i class="fas fa-building"></i>Companies</a>
+  <a href="#" onclick="showTab('jobs')"     id="nav-jobs"><i class="fas fa-briefcase"></i>Jobs</a>
+  <a href="#" onclick="showTab('apps')"     id="nav-apps"><i class="fas fa-file-alt"></i>Applications</a>
+  <a href="#" onclick="showTab('reports')"  id="nav-reports"><i class="fas fa-flag"></i>Reports</a>
+  <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
 </div>
 
-<!-- Main Content -->
-<div class="content">
+<div class="main">
+  <div class="topbar">
+    <h4><i class="fas fa-shield-alt" style="color:#c084fc;"></i>Admin Dashboard</h4>
+    <div class="admin-chip"><i class="fas fa-crown"></i><span id="adminName">Admin</span></div>
+  </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboardSection">
-    <div class="topbar">
-      <h4><i class="bi bi-speedometer2 me-2"></i>Dashboard</h4>
-      <span class="admin-badge"><i class="bi bi-shield-lock-fill me-1"></i>Admin</span>
+  <!-- SERVER STATUS BANNER -->
+  <div class="server-banner" id="serverBanner">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span id="serverBannerMsg">Checking server connection...</span>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="panel-overview">
+    <div class="stat-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-icon si-blue"><i class="fas fa-users"></i></div><div><div class="stat-num" id="oUsers"><span class="skeleton" style="width:40px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="stat-label">Total Users</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-teal"><i class="fas fa-building"></i></div><div><div class="stat-num" id="oCompanies"><span class="skeleton" style="width:40px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="stat-label">Companies</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-purple"><i class="fas fa-briefcase"></i></div><div><div class="stat-num" id="oJobs"><span class="skeleton" style="width:40px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="stat-label">Total Jobs</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-orange"><i class="fas fa-paper-plane"></i></div><div><div class="stat-num" id="oApps"><span class="skeleton" style="width:40px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="stat-label">Applications</div></div></div>
     </div>
-    <div class="row">
-      <div class="col-md-4 col-sm-6">
-        <div class="stat-card">
-          <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-          <div><div class="stat-number" id="statUsers">—</div><div class="stat-label">Total Users</div></div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="stat-card green">
-          <div class="stat-icon"><i class="bi bi-building"></i></div>
-          <div><div class="stat-number" id="statCompanies">—</div><div class="stat-label">Total Companies</div></div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="stat-card orange">
-          <div class="stat-icon"><i class="bi bi-briefcase-fill"></i></div>
-          <div><div class="stat-number" id="statJobs">—</div><div class="stat-label">Total Jobs</div></div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="stat-card purple">
-          <div class="stat-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
-          <div><div class="stat-number" id="statApplications">—</div><div class="stat-label">Applications</div></div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="stat-card red">
-          <div class="stat-icon"><i class="bi bi-flag-fill"></i></div>
-          <div><div class="stat-number" id="statReports">—</div><div class="stat-label">Pending Reports</div></div>
-        </div>
-      </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div class="stat-card"><div class="stat-icon si-green"><i class="fas fa-check-circle"></i></div><div><div class="stat-num" id="oAccepted">-</div><div class="stat-label">Accepted</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-red"><i class="fas fa-times-circle"></i></div><div><div class="stat-num" id="oRejected">-</div><div class="stat-label">Rejected</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-orange"><i class="fas fa-clock"></i></div><div><div class="stat-num" id="oPending">-</div><div class="stat-label">Pending</div></div></div>
     </div>
   </div>
 
   <!-- USERS -->
-  <div id="usersSection" style="display:none;">
-    <div class="topbar">
-      <h4><i class="bi bi-people me-2"></i>Users</h4>
-      <span class="admin-badge"><i class="bi bi-shield-lock-fill me-1"></i>Admin</span>
+  <div class="panel" id="panel-users">
+    <div class="panel-header">
+      <h5><i class="fas fa-users" style="color:#c084fc;"></i>All Users</h5>
+      <input type="text" class="search-input" placeholder="Search users..." oninput="filterTable('userTbody',this.value)">
     </div>
-    <div class="table-card">
-      <div class="section-header">
-        <h5>All Registered Users</h5>
-        <input type="text" id="userSearch" class="search-box" placeholder="🔍 Search name or email...">
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-          <tr>
-            <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
-            <th>Role</th><th>Actions</th>
-          </tr>
-          </thead>
-          <tbody id="usersTable"><tr><td colspan="6" class="text-center text-muted py-4">Loading...</td></tr></tbody>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Actions</th></tr></thead>
+      <tbody id="userTbody"><tr class="empty-row"><td colspan="6"><i class="fas fa-spinner fa-spin"></i>Loading...</td></tr></tbody></table>
     </div>
   </div>
 
   <!-- COMPANIES -->
-  <div id="companiesSection" style="display:none;">
-    <div class="topbar">
-      <h4><i class="bi bi-building me-2"></i>Companies</h4>
-      <span class="admin-badge"><i class="bi bi-shield-lock-fill me-1"></i>Admin</span>
+  <div class="panel" id="panel-companies">
+    <div class="panel-header">
+      <h5><i class="fas fa-building" style="color:#c084fc;"></i>All Companies</h5>
+      <input type="text" class="search-input" placeholder="Search companies..." oninput="filterTable('compTbody',this.value)">
     </div>
-    <div class="table-card">
-      <div class="section-header">
-        <h5>All Companies</h5>
-        <input type="text" id="companySearch" class="search-box" placeholder="🔍 Search name or email...">
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-          <tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr>
-          </thead>
-          <tbody id="companiesTable"><tr><td colspan="5" class="text-center text-muted py-4">Loading...</td></tr></tbody>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Industry</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="compTbody"><tr class="empty-row"><td colspan="6"><i class="fas fa-spinner fa-spin"></i>Loading...</td></tr></tbody></table>
     </div>
   </div>
 
   <!-- JOBS -->
-  <div id="jobsSection" style="display:none;">
-    <div class="topbar">
-      <h4><i class="bi bi-briefcase me-2"></i>Jobs</h4>
-      <span class="admin-badge"><i class="bi bi-shield-lock-fill me-1"></i>Admin</span>
+  <div class="panel" id="panel-jobs">
+    <div class="panel-header">
+      <h5><i class="fas fa-briefcase" style="color:#c084fc;"></i>All Jobs</h5>
+      <input type="text" class="search-input" placeholder="Search jobs..." oninput="filterTable('jobTbody',this.value)">
     </div>
-    <div class="table-card">
-      <div class="section-header">
-        <h5>All Job Postings</h5>
-        <input type="text" id="jobSearch" class="search-box" placeholder="🔍 Search title or company...">
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-          <tr><th>ID</th><th>Title</th><th>Company</th><th>Status</th><th>Actions</th></tr>
-          </thead>
-          <tbody id="jobsTable"><tr><td colspan="5" class="text-center text-muted py-4">Loading...</td></tr></tbody>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>#</th><th>Title</th><th>Company</th><th>Type</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="jobTbody"><tr class="empty-row"><td colspan="7"><i class="fas fa-spinner fa-spin"></i>Loading...</td></tr></tbody></table>
     </div>
   </div>
 
   <!-- APPLICATIONS -->
-  <div id="applicationsSection" style="display:none;">
-    <div class="topbar">
-      <h4><i class="bi bi-file-earmark-text me-2"></i>Applications</h4>
-      <span class="admin-badge"><i class="bi bi-shield-lock-fill me-1"></i>Admin</span>
+  <div class="panel" id="panel-apps">
+    <div class="panel-header">
+      <h5><i class="fas fa-file-alt" style="color:#c084fc;"></i>All Applications</h5>
+      <input type="text" class="search-input" placeholder="Search..." oninput="filterTable('appTbody',this.value)">
     </div>
-    <div class="table-card">
-      <div class="section-header">
-        <h5>All Applications</h5>
-        <input type="text" id="appSearch" class="search-box" placeholder="🔍 Search applicant or job...">
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-          <tr><th>ID</th><th>Job</th><th>Company</th><th>Applicant</th><th>Email</th><th>Status</th><th>Actions</th></tr>
-          </thead>
-          <tbody id="applicationsTable"><tr><td colspan="7" class="text-center text-muted py-4">Loading...</td></tr></tbody>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>#</th><th>Applicant</th><th>Email</th><th>Job</th><th>Company</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="appTbody"><tr class="empty-row"><td colspan="7"><i class="fas fa-spinner fa-spin"></i>Loading...</td></tr></tbody></table>
     </div>
   </div>
 
   <!-- REPORTS -->
-  <div id="reportsSection" style="display:none;">
-    <div class="topbar">
-      <h4><i class="bi bi-flag me-2"></i>Reports</h4>
-      <span class="admin-badge"><i class="bi bi-shield-lock-fill me-1"></i>Admin</span>
+  <div class="panel" id="panel-reports">
+    <div class="panel-header">
+      <h5><i class="fas fa-flag" style="color:#c084fc;"></i>User Reports</h5>
     </div>
-    <div class="table-card">
-      <div class="section-header">
-        <h5>User Reports</h5>
-        <input type="text" id="reportSearch" class="search-box" placeholder="🔍 Search user or company...">
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-          <tr><th>ID</th><th>User</th><th>Email</th><th>Company</th><th>Issue</th><th>Status</th><th>Actions</th></tr>
-          </thead>
-          <tbody id="reportsTable"><tr><td colspan="7" class="text-center text-muted py-4">Loading...</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /content -->
-
-<!-- View User Modal -->
-<div class="modal fade" id="viewUserModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>User Details</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-0">
-        <table class="table mb-0 user-info-row">
-          <tbody id="userDetailBody"></tbody>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>#</th><th>Reporter</th><th>Company</th><th>Issue</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="reportTbody"><tr class="empty-row"><td colspan="6"><i class="fas fa-spinner fa-spin"></i>Loading...</td></tr></tbody></table>
     </div>
   </div>
 </div>
 
-<!-- Toast Container -->
-<div class="toast-container"></div>
+<div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // =====================
-  //  UTILITIES
-  // =====================
-  function showToast(message, type = 'success') {
-    const container = document.querySelector('.toast-container');
-    const toast = document.createElement('div');
-    toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'danger'} border-0`;
-    toast.setAttribute('role', 'alert');
-    toast.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
-    container.appendChild(toast);
-    const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
-    bsToast.show();
-    toast.addEventListener('hidden.bs.toast', () => toast.remove());
+  // ─── CONFIG ────────────────────────────────────────────────
+  const API = 'http://localhost:8080';
+
+  // ─── AUTH GUARD ────────────────────────────────────────────
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!user || user.role !== 'ADMIN') {
+    window.location.href = 'login.html';
+  }
+  document.getElementById('adminName').textContent = user ? user.name : 'Admin';
+
+  // ─── SERVER CHECK ──────────────────────────────────────────
+  function checkServer() {
+    const banner = document.getElementById('serverBanner');
+    banner.style.display = 'flex';
+    document.getElementById('serverBannerMsg').textContent = 'Checking connection to localhost:8080...';
+
+    fetch(API + '/stats')
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(d => {
+        banner.className = 'server-banner ok';
+        document.getElementById('serverBannerMsg').textContent = '✅ Server connected — localhost:8080 is running';
+        setTimeout(() => { banner.style.display = 'none'; }, 3000);
+        fillStats(d);
+      })
+      .catch(err => {
+        banner.style.display = 'flex';
+        banner.className = 'server-banner';
+        document.getElementById('serverBannerMsg').innerHTML =
+          '❌ Cannot reach server at <strong>localhost:8080</strong>. ' +
+          'Run: <code style="background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;">./mvnw spring-boot:run</code> in the project folder.';
+        ['oUsers','oCompanies','oJobs','oApps','oAccepted','oRejected','oPending'].forEach(id => {
+          document.getElementById(id).textContent = '—';
+        });
+      });
   }
 
-  async function apiFetch(url, options = {}) {
-    if (options.method && options.method !== 'GET' && !options.headers) {
-      options.headers = { 'Content-Type': 'application/json' };
-    }
-    try {
-      const res = await fetch(url, options);
-      const contentType = res.headers.get('content-type') || '';
-      if (!contentType.includes('application/json')) {
-        const text = await res.text();
-        console.error(`Non-JSON response from ${url} (${res.status}):`, text.substring(0, 300));
-        showToast(`Server error ${res.status} on ${url.split('/').pop()}`, 'danger');
-        return null;
-      }
-      const data = await res.json();
-      if (!res.ok) {
-        showToast(data.message || `Error ${res.status}`, 'danger');
-        return null;
-      }
-      return data;
-    } catch (err) {
-      console.error(`Fetch failed [${url}]:`, err);
-      showToast('Cannot reach server — is it running on port 8080?', 'danger');
-      return null;
-    }
+  // ─── FILL STATS ────────────────────────────────────────────
+  function fillStats(d) {
+    document.getElementById('oUsers').textContent     = d.totalUsers       ?? 0;
+    document.getElementById('oCompanies').textContent = d.totalCompanies   ?? 0;
+    document.getElementById('oJobs').textContent      = d.totalJobs        ?? 0;
+    document.getElementById('oApps').textContent      = d.totalApplications?? 0;
+    document.getElementById('oAccepted').textContent  = d.accepted         ?? 0;
+    document.getElementById('oRejected').textContent  = d.rejected         ?? 0;
+    document.getElementById('oPending').textContent   = d.pending          ?? 0;
   }
 
-  function statusBadge(status) {
-    const map = {
-      APPROVED: 'bg-success', ACTIVE: 'bg-success', ACCEPTED: 'bg-success', RESOLVED: 'bg-success',
-      REJECTED: 'bg-danger', INACTIVE: 'bg-secondary', BANNED: 'bg-danger',
-      PENDING: 'bg-warning text-dark',
-      USER: 'bg-primary', ADMIN: 'bg-dark', COMPANY: 'bg-info text-dark',
-    };
-    const cls = map[status] || 'bg-secondary';
-    return `<span class="badge ${cls}">${status || '—'}</span>`;
+  // ─── TAB SWITCHING ─────────────────────────────────────────
+  const tabLoaded = {};
+  const tabLoaders = { users: loadUsers, companies: loadCompanies, jobs: loadJobs, apps: loadApps, reports: loadReports };
+
+  function showTab(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    if (tabLoaders[name] && !tabLoaded[name]) { tabLoaders[name](); tabLoaded[name] = true; }
+    return false;
   }
 
-  // =====================
-  //  DASHBOARD STATS
-  // =====================
-  async function loadStats() {
-    const data = await apiFetch('/stats');
-    if (!data) return;
-    document.getElementById('statUsers').innerText = data.totalUsers ?? '—';
-    document.getElementById('statCompanies').innerText = data.totalCompanies ?? '—';
-    document.getElementById('statJobs').innerText = data.totalJobs ?? '—';
-    document.getElementById('statApplications').innerText = data.totalApplications ?? '—';
-    document.getElementById('statReports').innerText = data.pendingReports ?? '—';
-  }
-
-  // =====================
-  //  USERS
-  // =====================
-  let allUsers = [];
-
-  async function loadUsers() {
-    allUsers = await apiFetch('/users') || [];
-    renderUsers();
-  }
-
-  function renderUsers() {
-    const search = (document.getElementById('userSearch')?.value || '').toLowerCase();
-    const filtered = allUsers.filter(u =>
-            (u.name || '').toLowerCase().includes(search) ||
-            (u.email || '').toLowerCase().includes(search)
-    );
-    const tbody = document.getElementById('usersTable');
-    if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i>No users found</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = filtered.map(u => `
-      <tr>
-        <td><span class="text-muted">#${u.id}</span></td>
-        <td><strong>${u.name || '—'}</strong></td>
-        <td>${u.email || '—'}</td>
-        <td>${u.phone || '—'}</td>
-        <td>${statusBadge(u.role)}</td>
-        <td>
-          <button class="btn btn-sm btn-outline-primary" onclick="viewUser(${u.id})"><i class="bi bi-eye"></i></button>
-          ${u.role !== 'BANNED'
-            ? `<button class="btn btn-sm btn-warning" onclick="banUser(${u.id})"><i class="bi bi-slash-circle"></i> Ban</button>`
-            : `<button class="btn btn-sm btn-success" onclick="unbanUser(${u.id})"><i class="bi bi-check-circle"></i> Unban</button>`}
-          <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.id})"><i class="bi bi-trash"></i></button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  function viewUser(id) {
-    const u = allUsers.find(x => x.id === id);
-    if (!u) return;
-    document.getElementById('userDetailBody').innerHTML = `
-      <tr><td>Name</td><td>${u.name || '—'}</td></tr>
-      <tr><td>Email</td><td>${u.email || '—'}</td></tr>
-      <tr><td>Phone</td><td>${u.phone || '—'}</td></tr>
-      <tr><td>Role</td><td>${statusBadge(u.role)}</td></tr>
-      <tr><td>Skills</td><td>${u.skills || '—'}</td></tr>
-      <tr><td>Education</td><td>${u.education || '—'}</td></tr>
-      <tr><td>Experience</td><td>${u.experience || '—'}</td></tr>
-    `;
-    new bootstrap.Modal(document.getElementById('viewUserModal')).show();
-  }
-
-  async function banUser(id) {
-    if (!confirm('Ban this user?')) return;
-    const res = await apiFetch(`/users/${id}/role?role=BANNED`, { method: 'PUT' });
-    if (res?.status === 'success') { showToast('User banned'); loadUsers(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  async function unbanUser(id) {
-    const res = await apiFetch(`/users/${id}/role?role=USER`, { method: 'PUT' });
-    if (res?.status === 'success') { showToast('User unbanned'); loadUsers(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  async function deleteUser(id) {
-    if (!confirm('Permanently delete this user?')) return;
-    const res = await apiFetch(`/users/${id}`, { method: 'DELETE' });
-    if (res?.status === 'success') { showToast('User deleted'); loadUsers(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  // =====================
-  //  COMPANIES
-  // =====================
-  let allCompanies = [];
-
-  async function loadCompanies() {
-    allCompanies = await apiFetch('/company/all') || [];
-    renderCompanies();
-  }
-
-  function renderCompanies() {
-    const search = (document.getElementById('companySearch')?.value || '').toLowerCase();
-    const filtered = allCompanies.filter(c =>
-            (c.name || '').toLowerCase().includes(search) ||
-            (c.email || '').toLowerCase().includes(search)
-    );
-    const tbody = document.getElementById('companiesTable');
-    if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="bi bi-building"></i>No companies found</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = filtered.map(c => `
-      <tr>
-        <td><span class="text-muted">#${c.id}</span></td>
-        <td><strong>${c.name || '—'}</strong></td>
-        <td>${c.email || '—'}</td>
-        <td>${statusBadge(c.status || 'PENDING')}</td>
-        <td>
-          ${c.status !== 'APPROVED'
-            ? `<button class="btn btn-sm btn-success" onclick="updateCompanyStatus(${c.id},'APPROVED')"><i class="bi bi-check-lg"></i> Approve</button>`
-            : ''}
-          ${c.status !== 'REJECTED'
-            ? `<button class="btn btn-sm btn-warning" onclick="updateCompanyStatus(${c.id},'REJECTED')"><i class="bi bi-x-lg"></i> Reject</button>`
-            : ''}
-          <button class="btn btn-sm btn-danger" onclick="deleteCompany(${c.id})"><i class="bi bi-trash"></i></button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  async function updateCompanyStatus(id, status) {
-    const res = await apiFetch(`/company/${id}/status?status=${status}`, { method: 'PUT' });
-    if (res?.status === 'success') { showToast(`Company ${status.toLowerCase()}`); loadCompanies(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  async function deleteCompany(id) {
-    if (!confirm('Delete this company and all their data?')) return;
-    const res = await apiFetch(`/company/${id}`, { method: 'DELETE' });
-    if (res?.status === 'success') { showToast('Company deleted'); loadCompanies(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  // =====================
-  //  JOBS
-  // =====================
-  let allJobs = [];
-
-  async function loadJobs() {
-    allJobs = await apiFetch('/jobs/all') || [];
-    renderJobs();
-  }
-
-  function renderJobs() {
-    const search = (document.getElementById('jobSearch')?.value || '').toLowerCase();
-    const filtered = allJobs.filter(j =>
-            (j.title || '').toLowerCase().includes(search) ||
-            (j.companyName || '').toLowerCase().includes(search)
-    );
-    const tbody = document.getElementById('jobsTable');
-    if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="bi bi-briefcase"></i>No jobs found</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = filtered.map(j => `
-      <tr>
-        <td><span class="text-muted">#${j.id}</span></td>
-        <td><strong>${j.title || '—'}</strong></td>
-        <td>${j.companyName || '—'}</td>
-        <td>${statusBadge(j.status || 'ACTIVE')}</td>
-        <td>
-          <button class="btn btn-sm ${j.status === 'ACTIVE' ? 'btn-secondary' : 'btn-success'}"
-            onclick="updateJobStatus(${j.id}, '${j.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'}')">
-            <i class="bi bi-${j.status === 'ACTIVE' ? 'pause-circle' : 'play-circle'}"></i>
-            ${j.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
-          </button>
-          <button class="btn btn-sm btn-danger" onclick="deleteJob(${j.id})"><i class="bi bi-trash"></i></button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  async function updateJobStatus(id, status) {
-    const res = await apiFetch(`/jobs/${id}/status?status=${status}`, { method: 'PUT' });
-    if (res?.status === 'success') { showToast(`Job ${status.toLowerCase()}`); loadJobs(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  async function deleteJob(id) {
-    if (!confirm('Delete this job posting?')) return;
-    const res = await apiFetch(`/jobs/${id}`, { method: 'DELETE' });
-    if (res?.status === 'success') { showToast('Job deleted'); loadJobs(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  // =====================
-  //  APPLICATIONS
-  // =====================
-  let allApplications = [];
-
-  async function loadApplications() {
-    allApplications = await apiFetch('/application/all') || [];
-    renderApplications();
-  }
-
-  function renderApplications() {
-    const search = (document.getElementById('appSearch')?.value || '').toLowerCase();
-    const filtered = allApplications.filter(a =>
-            (a.userName || '').toLowerCase().includes(search) ||
-            (a.jobTitle || '').toLowerCase().includes(search) ||
-            (a.userEmail || '').toLowerCase().includes(search)
-    );
-    const tbody = document.getElementById('applicationsTable');
-    if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="bi bi-file-earmark-text"></i>No applications found</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = filtered.map(a => `
-      <tr>
-        <td><span class="text-muted">#${a.id}</span></td>
-        <td><strong>${a.jobTitle || '—'}</strong></td>
-        <td>${a.companyName || '—'}</td>
-        <td>${a.userName || '—'}</td>
-        <td>${a.userEmail || '—'}</td>
-        <td>${statusBadge(a.status || 'PENDING')}</td>
-        <td>
-          ${a.status !== 'ACCEPTED'
-            ? `<button class="btn btn-sm btn-success" onclick="updateAppStatus(${a.id},'accept')"><i class="bi bi-check-lg"></i> Accept</button>`
-            : ''}
-          ${a.status !== 'REJECTED'
-            ? `<button class="btn btn-sm btn-warning" onclick="updateAppStatus(${a.id},'reject')"><i class="bi bi-x-lg"></i> Reject</button>`
-            : ''}
-          <button class="btn btn-sm btn-danger" onclick="deleteApplication(${a.id})"><i class="bi bi-trash"></i></button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  async function updateAppStatus(id, action) {
-    const res = await apiFetch(`/application/${action}/${id}`, { method: 'PUT' });
-    if (res?.status === 'success') { showToast(`Application ${action}ed`); loadApplications(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  async function deleteApplication(id) {
-    if (!confirm('Delete this application?')) return;
-    const res = await apiFetch(`/application/${id}`, { method: 'DELETE' });
-    if (res?.status === 'success') { showToast('Application deleted'); loadApplications(); loadStats(); }
-    else showToast(res?.message || 'Failed', 'danger');
-  }
-
-  // =====================
-  //  REPORTS
-  // =====================
-  let allReports = [];
-
-  async function loadReports() {
-    allReports = await apiFetch('/report/all') || [];
-    renderReports();
-  }
-
-  function renderReports() {
-    const search = (document.getElementById('reportSearch')?.value || '').toLowerCase();
-    const filtered = allReports.filter(r =>
-            (r.userName || '').toLowerCase().includes(search) ||
-            (r.companyName || '').toLowerCase().includes(search) ||
-            (r.userEmail || '').toLowerCase().includes(search)
-    );
-    const tbody = document.getElementById('reportsTable');
-    if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="bi bi-flag"></i>No reports found</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = filtered.map(r => `
-      <tr>
-        <td><span class="text-muted">#${r.id}</span></td>
-        <td>${r.userName || '—'}</td>
-        <td>${r.userEmail || '—'}</td>
-        <td>${r.companyName || '—'}</td>
-        <td><span title="${r.issue || ''}">${(r.issue || '—').substring(0, 50)}${(r.issue || '').length > 50 ? '…' : ''}</span></td>
-        <td>${statusBadge(r.status || 'PENDING')}</td>
-        <td>
-          ${r.status !== 'RESOLVED'
-            ? `<button class="btn btn-sm btn-success" onclick="updateReportStatus(${r.id},'RESOLVED')"><i class="bi bi-check-lg"></i> Resolve</button>`
-            : ''}
-          ${r.status !== 'REJECTED'
-            ? `<button class="btn btn-sm btn-danger" onclick="updateReportStatus(${r.id},'REJECTED')"><i class="bi bi-x-lg"></i> Dismiss</button>`
-            : ''}
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  async function updateReportStatus(id, status) {
-    const res = await apiFetch(`/report/update/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status })
+  // ─── API HELPER ────────────────────────────────────────────
+  function api(url) {
+    return fetch(API + url).then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' on ' + url);
+      return r.json();
     });
-    if (res) { showToast(`Report marked as ${status.toLowerCase()}`); loadReports(); loadStats(); }
-    else showToast('Failed to update report', 'danger');
+  }
+  function apiMut(url, method, body) {
+    return fetch(API + url, {
+      method,
+      headers: body ? {'Content-Type':'application/json'} : {},
+      body: body ? JSON.stringify(body) : undefined
+    });
   }
 
-  // =====================
-  //  NAVIGATION
-  // =====================
-  const sections = ['dashboard', 'users', 'companies', 'jobs', 'applications', 'reports'];
-  const loaders = {
-    dashboard: loadStats,
-    users: loadUsers,
-    companies: loadCompanies,
-    jobs: loadJobs,
-    applications: loadApplications,
-    reports: loadReports,
-  };
-
-  function showSection(section) {
-    sections.forEach(s => {
-      document.getElementById(s + 'Section').style.display = s === section ? 'block' : 'none';
-    });
-    document.querySelectorAll('.sidebar a[data-section]').forEach(a => {
-      a.classList.toggle('active', a.getAttribute('data-section') === section);
-    });
-    if (loaders[section]) loaders[section]();
+  // ─── USERS ─────────────────────────────────────────────────
+  function loadUsers() {
+    api('/users').then(users => {
+      document.getElementById('userTbody').innerHTML = users.length ? users.map((u,i) => `
+        <tr>
+          <td style="color:#64748b;">${i+1}</td>
+          <td style="color:#e2e8f0;font-weight:600;">${u.name}</td>
+          <td class="truncate">${u.email}</td>
+          <td>${u.phone||'—'}</td>
+          <td><span class="badge badge-${u.role}">${u.role}</span></td>
+          <td>
+            ${u.role==='BANNED'
+              ? `<button class="btn-sm btn-success" onclick="userRole(${u.id},'USER')"><i class="fas fa-unlock"></i> Unban</button>`
+              : u.role!=='ADMIN' ? `<button class="btn-sm btn-warning" onclick="userRole(${u.id},'BANNED')"><i class="fas fa-ban"></i> Ban</button>` : ''}
+            ${u.role!=='ADMIN' ? `<button class="btn-sm btn-danger" onclick="delUser(${u.id})"><i class="fas fa-trash"></i></button>` : ''}
+          </td>
+        </tr>`).join('')
+        : `<tr class="empty-row"><td colspan="6"><i class="fas fa-users"></i>No users found</td></tr>`;
+    }).catch(() => errRow('userTbody', 6));
+  }
+  function userRole(id, role) {
+    apiMut(`/users/${id}/role?role=${role}`, 'PUT')
+      .then(() => { toast(`User ${role==='BANNED'?'banned':'unbanned'} ✓`); tabLoaded.users=false; loadUsers(); })
+      .catch(() => toast('Failed to update user', 'error'));
+  }
+  function delUser(id) {
+    if (!confirm('Delete this user permanently?')) return;
+    apiMut('/users/'+id,'DELETE')
+      .then(() => { toast('User deleted'); tabLoaded.users=false; loadUsers(); })
+      .catch(() => toast('Failed','error'));
   }
 
-  document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      showSection(link.getAttribute('data-section'));
+  // ─── COMPANIES ─────────────────────────────────────────────
+  function loadCompanies() {
+    api('/company/all').then(list => {
+      document.getElementById('compTbody').innerHTML = list.length ? list.map((c,i) => `
+        <tr>
+          <td style="color:#64748b;">${i+1}</td>
+          <td style="color:#e2e8f0;font-weight:600;">${c.name}</td>
+          <td class="truncate">${c.email}</td>
+          <td>${c.industry||'—'}</td>
+          <td><span class="badge badge-${c.role==='COMPANY'?'COMPANY':c.role}">${c.role}</span></td>
+          <td>
+            ${c.role!=='SUSPENDED'
+              ? `<button class="btn-sm btn-warning" onclick="compStatus(${c.id},'SUSPENDED')"><i class="fas fa-ban"></i> Suspend</button>`
+              : `<button class="btn-sm btn-success" onclick="compStatus(${c.id},'COMPANY')"><i class="fas fa-check"></i> Restore</button>`}
+            <button class="btn-sm btn-danger" onclick="delComp(${c.id})"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`).join('')
+        : `<tr class="empty-row"><td colspan="6"><i class="fas fa-building"></i>No companies found</td></tr>`;
+    }).catch(() => errRow('compTbody', 6));
+  }
+  function compStatus(id, status) {
+    apiMut(`/company/${id}/status?status=${status}`, 'PUT')
+      .then(() => { toast(`Company ${status==='SUSPENDED'?'suspended':'restored'} ✓`); loadCompanies(); })
+      .catch(() => toast('Failed', 'error'));
+  }
+  function delComp(id) {
+    if (!confirm('Delete this company?')) return;
+    apiMut('/company/'+id,'DELETE')
+      .then(() => { toast('Company deleted'); loadCompanies(); })
+      .catch(() => toast('Failed','error'));
+  }
+
+  // ─── JOBS ──────────────────────────────────────────────────
+  function loadJobs() {
+    api('/jobs/all').then(jobs => {
+      document.getElementById('jobTbody').innerHTML = jobs.length ? jobs.map((j,i) => `
+        <tr>
+          <td style="color:#64748b;">${i+1}</td>
+          <td style="color:#e2e8f0;font-weight:600;" class="truncate">${j.title}</td>
+          <td class="truncate">${j.companyName}</td>
+          <td>${j.type||'—'}</td>
+          <td>${j.location||'—'}</td>
+          <td><span class="badge badge-${j.status}">${j.status}</span></td>
+          <td>
+            ${j.status==='ACTIVE'
+              ? `<button class="btn-sm btn-warning" onclick="jobStatus(${j.id},'CLOSED')">Close</button>`
+              : `<button class="btn-sm btn-success" onclick="jobStatus(${j.id},'ACTIVE')">Activate</button>`}
+            <button class="btn-sm btn-danger" onclick="delJob(${j.id})"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`).join('')
+        : `<tr class="empty-row"><td colspan="7"><i class="fas fa-briefcase"></i>No jobs found</td></tr>`;
+    }).catch(() => errRow('jobTbody', 7));
+  }
+  function jobStatus(id, status) {
+    apiMut(`/jobs/${id}/status?status=${status}`, 'PUT')
+      .then(() => { toast('Job status updated ✓'); loadJobs(); })
+      .catch(() => toast('Failed','error'));
+  }
+  function delJob(id) {
+    if (!confirm('Delete this job?')) return;
+    apiMut('/jobs/'+id,'DELETE')
+      .then(() => { toast('Job deleted'); loadJobs(); })
+      .catch(() => toast('Failed','error'));
+  }
+
+  // ─── APPLICATIONS ──────────────────────────────────────────
+  function loadApps() {
+    api('/application/all').then(apps => {
+      document.getElementById('appTbody').innerHTML = apps.length ? apps.map((a,i) => `
+        <tr>
+          <td style="color:#64748b;">${i+1}</td>
+          <td style="color:#e2e8f0;font-weight:600;">${a.userName}</td>
+          <td class="truncate">${a.userEmail}</td>
+          <td class="truncate">${a.jobTitle}</td>
+          <td class="truncate">${a.companyName}</td>
+          <td><span class="badge badge-${a.status}">${a.status}</span></td>
+          <td>
+            ${a.status==='PENDING' ? `
+              <button class="btn-sm btn-success" onclick="appAction(${a.id},'accept')"><i class="fas fa-check"></i></button>
+              <button class="btn-sm btn-danger"  onclick="appAction(${a.id},'reject')"><i class="fas fa-times"></i></button>
+            ` : ''}
+            <button class="btn-sm btn-danger" onclick="delApp(${a.id})"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`).join('')
+        : `<tr class="empty-row"><td colspan="7"><i class="fas fa-file-alt"></i>No applications found</td></tr>`;
+    }).catch(() => errRow('appTbody', 7));
+  }
+  function appAction(id, action) {
+    apiMut(`/application/${action}/${id}`, 'PUT')
+      .then(() => { toast(`Application ${action==='accept'?'accepted':'rejected'} ✓`); loadApps(); })
+      .catch(() => toast('Failed','error'));
+  }
+  function delApp(id) {
+    apiMut('/application/'+id,'DELETE')
+      .then(() => { toast('Application deleted'); loadApps(); })
+      .catch(() => toast('Failed','error'));
+  }
+
+  // ─── REPORTS ───────────────────────────────────────────────
+  function loadReports() {
+    api('/report/all').then(reports => {
+      document.getElementById('reportTbody').innerHTML = reports.length ? reports.map((r,i) => `
+        <tr>
+          <td style="color:#64748b;">${i+1}</td>
+          <td style="color:#e2e8f0;font-weight:600;">${r.userName}</td>
+          <td>${r.companyName}</td>
+          <td class="truncate" style="max-width:200px;">${r.issue}</td>
+          <td><span class="badge badge-${r.status}">${r.status}</span></td>
+          <td>
+            ${r.status==='PENDING' ? `
+              <button class="btn-sm btn-success" onclick="reportAction(${r.id},'RESOLVED')"><i class="fas fa-check"></i> Resolve</button>
+              <button class="btn-sm btn-danger"  onclick="reportAction(${r.id},'REJECTED')"><i class="fas fa-times"></i> Reject</button>
+            ` : `<span style="color:#475569;font-size:.78rem;">${r.status}</span>`}
+          </td>
+        </tr>`).join('')
+        : `<tr class="empty-row"><td colspan="6"><i class="fas fa-flag"></i>No reports found</td></tr>`;
+    }).catch(() => errRow('reportTbody', 6));
+  }
+  function reportAction(id, status) {
+    apiMut('/report/update/'+id, 'PUT', {status})
+      .then(() => { toast(`Report marked ${status} ✓`); loadReports(); })
+      .catch(() => toast('Failed','error'));
+  }
+
+  // ─── HELPERS ───────────────────────────────────────────────
+  function filterTable(tbodyId, q) {
+    q = q.toLowerCase();
+    document.getElementById(tbodyId).querySelectorAll('tr:not(.empty-row)').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
-  });
+  }
+  function errRow(tbodyId, cols) {
+    document.getElementById(tbodyId).innerHTML =
+      `<tr class="empty-row"><td colspan="${cols}"><i class="fas fa-exclamation-triangle" style="color:#f87171;"></i>Cannot load data — is the server running?</td></tr>`;
+  }
+  function toast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast toast-${type}`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+  function logout() { localStorage.clear(); window.location.href = 'login.html'; }
 
-  // Search inputs
-  document.getElementById('userSearch')?.addEventListener('input', renderUsers);
-  document.getElementById('companySearch')?.addEventListener('input', renderCompanies);
-  document.getElementById('jobSearch')?.addEventListener('input', renderJobs);
-  document.getElementById('appSearch')?.addEventListener('input', renderApplications);
-  document.getElementById('reportSearch')?.addEventListener('input', renderReports);
-
-  // Init
-  showSection('dashboard');
+  // ─── INIT ──────────────────────────────────────────────────
+  checkServer();
 </script>
 </body>
 </html>
